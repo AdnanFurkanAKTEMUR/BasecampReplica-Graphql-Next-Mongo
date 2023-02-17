@@ -10,7 +10,7 @@ type Project {
   project_image: String
   project_description: String
   owner_id: String
-  parent_project: String
+  parent_project_id: String
 }
 
 input getProjectInput{
@@ -22,7 +22,7 @@ input createProjectInput {
   project_image: String!
   project_description: String!
   owner_id: String
-  parent_project: String
+  parent_project_id: String
 }
 
 input updateProjectInput {
@@ -30,7 +30,7 @@ input updateProjectInput {
   project_name: String
   project_image: String
   project_description: String
-  parent_project: String
+  parent_project_id: String
 }
 
 input deleteProjectInput {
