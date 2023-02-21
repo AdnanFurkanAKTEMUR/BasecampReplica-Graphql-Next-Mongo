@@ -1,4 +1,4 @@
-const { gql } = require("graphql")
+const { gql } = require("apollo-server")
 
 
 //stuff eklenecek

@@ -4,7 +4,7 @@ module.exports = {
   Query: {
     getAllProjects: async (_, {input}, {req, res, client}) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("projects")
+        const projectCollection = await client.db("basecampReplica").collection("topics")
         const allProjects = await projectCollection.find({}).toArray()
         return allProjects ? allProjects : null
       }catch(e){
@@ -13,7 +13,7 @@ module.exports = {
     },
     getProject: async (_, { input }, { req, res, client }) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("projects")
+        const projectCollection = await client.db("basecampReplica").collection("topics")
         const project = await projectCollection.findOne({ _id: new ObjectId(input?._id) })
         return project ? project : null
       }catch(e){
@@ -25,7 +25,7 @@ module.exports = {
   Mutation: {
     createProject: async (_ , { input }, { req, res, client }) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("projects")
+        const projectCollection = await client.db("basecampReplica").collection("topics")
         const project = await projectCollection.insertOne({
           project_name:input?.project_name,
           project_image:input?.project_image,
@@ -46,7 +46,7 @@ module.exports = {
 
     updateProject: async ( _, { input }, { req, res, client }) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("projects")
+        const projectCollection = await client.db("basecampReplica").collection("topics")
         const projectUpdate = await projectCollection.updateOne({ _id: new ObjectId(input?._id) }, {
           $set:{
             project_name: input?.project_name,
@@ -68,7 +68,7 @@ module.exports = {
     },
     deleteProject: async ( _, { input }, { req, res, client }) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("projects")
+        const projectCollection = await client.db("basecampReplica").collection("topics")
         const deletedProject = await projectCollection.findOne({ _id: new ObjectId(input?._id) })
         const project = await projectCollection.deleteOne({ _id: new ObjectId(input?._id) })
         
