@@ -55,7 +55,6 @@ module.exports = {
             parent_project_id: input?.parent_project_id
           }
         })
-        console.log(projectUpdate);
         if(projectUpdate.modifiedCount>0){
           const project = await projectCollection.findOne({ _id:new ObjectId(input?._id) })
           return project ? project : null

@@ -2,20 +2,29 @@ const ObjectId = require('mongodb').ObjectId;
 module.exports = {
 
   Query: {
-    getAllProjects: async (_, {input}, {req, res, client}) => {
+    getAllTopics: async (_, {input}, {req, res, client}) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("topics")
-        const allProjects = await projectCollection.find({}).toArray()
-        return allProjects ? allProjects : null
+        const topicCollection = await client.db("basecampReplica").collection("topics")
+        const allTopics = await topicCollection.find({}).toArray()
+        return allTopics ? allTopics : null
       }catch(e){
         throw new Error("We have an error! " + e)
       }
     },
-    getProject: async (_, { input }, { req, res, client }) => {
+    getAllTopicsOfProject: async (_, {input}, {req, res, client}) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("topics")
-        const project = await projectCollection.findOne({ _id: new ObjectId(input?._id) })
-        return project ? project : null
+        const topicCollection = await client.db("basecampReplica").collection("topics")
+        const allTopics = await topicCollection.find({project_id: input?.project_id}).toArray()
+        return allTopics ? allTopics : null
+      }catch(e){
+        throw new Error("We have an error! " + e)
+      }
+    },
+    getTopic: async (_, { input }, { req, res, client }) => {
+      try{
+        const topicCollection = await client.db("basecampReplica").collection("topics")
+        const topic = await topicCollection.findOne({ _id: new ObjectId(input?._id) })
+        return topic ? topic : null
       }catch(e){
         throw new Error("We have an error! " + e)
       }
@@ -23,19 +32,17 @@ module.exports = {
   },
 
   Mutation: {
-    createProject: async (_ , { input }, { req, res, client }) => {
+    createTopic: async (_ , { input }, { req, res, client }) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("topics")
-        const project = await projectCollection.insertOne({
-          project_name:input?.project_name,
-          project_image:input?.project_image,
-          project_description:input?.project_description,
-          owner_id: input?.owner_id,
-          parent_project_id: input?.parent_project_id
+        const topicCollection = await client.db("basecampReplica").collection("topics")
+        const topic = await topicCollection.insertOne({
+          project_id: input?.project_id,
+          topic_name: input?.topic_name,
+          topic_description: input?.topic_description
         })
-        if(project.acknowledged){
-          const createdProject = await projectCollection.findOne({ _id: project.insertedId})
-          return createdProject ? createdProject : null
+        if(topic.acknowledged){
+          const createdTopic = await topicCollection.findOne({ _id: topic.insertedId})
+          return createdTopic ? createdTopic : null
         }else {
           return null
         }
@@ -44,21 +51,18 @@ module.exports = {
       }
     },
 
-    updateProject: async ( _, { input }, { req, res, client }) => {
+    updateTopic: async ( _, { input }, { req, res, client }) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("topics")
-        const projectUpdate = await projectCollection.updateOne({ _id: new ObjectId(input?._id) }, {
+        const topicCollection = await client.db("basecampReplica").collection("topics")
+        const topicUpdate = await topicCollection.updateOne({ _id: new ObjectId(input?._id) }, {
           $set:{
-            project_name: input?.project_name,
-            project_image: input?.project_image,
-            project_description: input?.project_description,
-            parent_project_id: input?.parent_project_id
+            topic_name: input?.topic_name,
+            topic_description: input?.topic_description
           }
         })
-        console.log(projectUpdate);
-        if(projectUpdate.modifiedCount>0){
-          const project = await projectCollection.findOne({ _id:new ObjectId(input?._id) })
-          return project ? project : null
+        if(topicUpdate.modifiedCount>0){
+          const topic = await topicCollection.findOne({ _id:new ObjectId(input?._id) })
+          return topic ? topic : null
         }else{
           return null
         }
@@ -66,14 +70,14 @@ module.exports = {
         throw new Error("We have an error! " + e)
       }
     },
-    deleteProject: async ( _, { input }, { req, res, client }) => {
+    deleteTopic: async ( _, { input }, { req, res, client }) => {
       try{
-        const projectCollection = await client.db("basecampReplica").collection("topics")
-        const deletedProject = await projectCollection.findOne({ _id: new ObjectId(input?._id) })
-        const project = await projectCollection.deleteOne({ _id: new ObjectId(input?._id) })
+        const topicCollection = await client.db("basecampReplica").collection("topics")
+        const deletedTopic = await topicCollection.findOne({ _id: new ObjectId(input?._id) })
+        const topic = await topicCollection.deleteOne({ _id: new ObjectId(input?._id) })
         
-        if(project.deletedCount > 0){
-          return deletedProject ? deletedProject : null
+        if(topic.deletedCount > 0){
+          return deletedTopic ? deletedTopic : null
         }else{
           return null
         }

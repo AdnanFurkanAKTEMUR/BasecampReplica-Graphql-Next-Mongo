@@ -34,9 +34,9 @@ input deleteTopicInput{
 }
 
 type Query {
-  getAllTopic: [Topic]
+  getAllTopics: [Topic]
   getTopic(input: getTopicInput!): Topic
-  getAllTopicOfProject(input: getAllTopicOfProjectInput): [Topic]
+  getAllTopicsOfProject(input: getAllTopicOfProjectInput): [Topic]
 }
 
 type Mutation {
