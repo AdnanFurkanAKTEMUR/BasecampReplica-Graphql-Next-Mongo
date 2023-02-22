@@ -38,7 +38,9 @@ module.exports = {
         const topic = await topicCollection.insertOne({
           project_id: input?.project_id,
           topic_name: input?.topic_name,
-          topic_description: input?.topic_description
+          topic_description: input?.topic_description,
+          created_at: new Date(),
+          updated_at: new Date()
         })
         if (topic.acknowledged) {
           const createdTopic = await topicCollection.findOne({ _id: topic.insertedId })
@@ -57,7 +59,8 @@ module.exports = {
         const topicUpdate = await topicCollection.updateOne({ _id: new ObjectId(input?._id) }, {
           $set: {
             topic_name: input?.topic_name,
-            topic_description: input?.topic_description
+            topic_description: input?.topic_description,
+            updated_at: new Date()
           }
         })
         if (topicUpdate.modifiedCount > 0) {

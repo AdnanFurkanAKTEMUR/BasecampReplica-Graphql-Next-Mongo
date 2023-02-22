@@ -39,7 +39,9 @@ module.exports = {
           topic_id: input?.topic_id,
           todo_name: input?.todo_name,
           todo_description: input?.todo_description,
-          todo_owner_id: input?.todo_owner_id
+          todo_owner_id: input?.todo_owner_id,
+          created_at: new Date(),
+          updated_at: new Date()
         })
         if (todo.acknowledged) {
           const createdTodo = await todoCollection.findOne({ _id: todo.insertedId })
@@ -59,7 +61,8 @@ module.exports = {
           $set: {
             todo_name: input?.todo_name,
             todo_description: input?.todo_description,
-            todo_owner_id: input?.todo_owner_id
+            todo_owner_id: input?.todo_owner_id,
+            updated_at: new Date()
           }
         })
         if (todoUpdate.modifiedCount > 0) {

@@ -8,6 +8,8 @@ type Todo {
   todo_name: String
   todo_owner_id: String
   todo_description: String
+  updated_at: String
+  created_at: String
 }
 
 input getTodoInput{

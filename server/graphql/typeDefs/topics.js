@@ -7,6 +7,8 @@ type Topic {
   project_id: String
   topic_name: String
   topic_description: String
+  updated_at: String
+  created_at: String
 }
 
 input getTopicInput{

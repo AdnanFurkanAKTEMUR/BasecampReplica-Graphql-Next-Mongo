@@ -39,7 +39,9 @@ module.exports = {
           todo_id: input?.todo_id,
           comment_owner_id: input?.comment_owner_id,
           comment_owner_name: input?.comment_owner_name,
-          comment: input?.comment
+          comment: input?.comment,
+          created_at: new Date(),
+          updated_at: new Date()
         })
         if (comment.acknowledged) {
           const createdComment = await commentCollection.findOne({ _id: comment.insertedId })
@@ -57,7 +59,8 @@ module.exports = {
         const commentCollection = await client.db("basecampReplica").collection("todo_comments")
         const commentUpdate = await commentCollection.updateOne({ _id: new ObjectId(input?._id) }, {
           $set: {
-            comment: input?.comment
+            comment: input?.comment,
+            updated_at: new Date()
           }
         })
         if (commentUpdate.modifiedCount > 0) {

@@ -31,7 +31,9 @@ module.exports = {
           project_image: input?.project_image,
           project_description: input?.project_description,
           owner_id: input?.owner_id,
-          parent_project_id: input?.parent_project_id
+          parent_project_id: input?.parent_project_id,
+          created_at: new Date(),
+          updated_at: new Date()
         })
         if (project.acknowledged) {
           const createdProject = await projectCollection.findOne({ _id: project.insertedId })
@@ -52,7 +54,8 @@ module.exports = {
             project_name: input?.project_name,
             project_image: input?.project_image,
             project_description: input?.project_description,
-            parent_project_id: input?.parent_project_id
+            parent_project_id: input?.parent_project_id,
+            updated_at: new Date()
           }
         })
         if (projectUpdate.modifiedCount > 0) {
