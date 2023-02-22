@@ -9,9 +9,12 @@ const projectResolvers = require("./resolvers/projectsResolvers.js")
 const topicTypeDefs = require("./typeDefs/topics.js")
 const topicResolvers = require("./resolvers/topicsResolvers.js")
 
+const todoTypeDefs = require("./typeDefs/todos.js")
+const todoResolvers = require("./resolvers/todosResolvers.js")
+
 const schema = makeExecutableSchema({
-  typeDefs: [exampleTypDefs, projectTypeDefs, topicTypeDefs],
-  resolvers: [exampleResolvers, projectResolvers, topicResolvers]
+  typeDefs: [exampleTypDefs, projectTypeDefs, topicTypeDefs, todoTypeDefs],
+  resolvers: [exampleResolvers, projectResolvers, topicResolvers, todoResolvers]
 })
 
 module.exports = schema
