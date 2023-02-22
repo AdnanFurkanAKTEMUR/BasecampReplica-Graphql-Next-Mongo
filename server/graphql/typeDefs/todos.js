@@ -1,5 +1,5 @@
 const { gql } = require("apollo-server")
-//todo comment yapılacak
+
 module.exports = gql`
 
 type Todo {
