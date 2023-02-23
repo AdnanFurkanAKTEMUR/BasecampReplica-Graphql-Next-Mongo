@@ -24,7 +24,7 @@ input createTodoInput{
   topic_id: String!
   todo_name: String!
   todo_description: String
-  todo_owner_id: String
+  todo_owners_ids: [String]
 }
 
 input updateTodoInput{
