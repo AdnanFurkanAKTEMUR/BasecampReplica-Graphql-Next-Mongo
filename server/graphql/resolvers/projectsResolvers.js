@@ -82,7 +82,58 @@ module.exports = {
       } catch (e) {
         throw new Error("We found an error! " + e)
       }
-    }
+    },
+    updateProjectStuff: async (_, { input }, { req, res, client }) => {
+      try{
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const projectsCollection = await client.db("basecampReplica").collection("projects")
+        if(input?.process == "add"){  
+          const projectUpdate = await projectsCollection.updateOne({ _id: new ObjectId(input?.project_id)},
+          {
+            $push:{
+              stuff_ids: input?.user_id
+            }
+          })
+
+          await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},
+            {
+              $push:{
+                project_ids: input?.project_id
+              }
+            })
+          if(projectUpdate.modifiedCount > 0){
+            const project = await projectsCollection.findOne({ _id: new ObjectId(input?.project_id) })
+            return project ? project : null
+          }else {
+            return null
+          }
+        } else if(input?.process == "delete"){
+          const projectUpdate = await projectsCollection.updateOne({ _id: new ObjectId(input?.project_id)},
+          {
+            $pull:{
+              stuff_ids: input?.user_id
+            }
+          })
+
+          await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},
+          {
+            $pull: {
+              project_ids: input?.project_id
+            }
+          })
+          if(projectUpdate.modifiedCount > 0 ){
+            const project = await projectsCollection.findOne({ _id: new ObjectId(input?.project_id)})
+            return project ? project : null
+          }else{
+            return null
+          }
+        } else {
+          return null
+        }
+      }catch(e){
+        throw new Error("We found an error! " + e)
+      }
+    },
   }
 
 }

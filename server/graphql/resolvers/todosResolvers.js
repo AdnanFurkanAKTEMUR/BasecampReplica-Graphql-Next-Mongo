@@ -89,6 +89,55 @@ module.exports = {
       } catch (e) {
         throw new Error("We found an error! " + e)
       }
+    },
+    updateTodoOwners: async (_, { input }, { req, res, client }) => {
+      try{
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const todosCollection = await client.db("basecampReplica").collection("todos")
+        if(input?.process == "add"){
+          const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
+          {
+            $push:{
+              todo_owner_ids: input?.user_id
+            }
+          })
+          await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},
+          {
+            $push:{
+              todo_ids: input?.todo_id
+            }
+          })
+          if(todoUpdate.modifiedCount > 0){
+            const todo = await todosCollection.findOne({ _id: new ObjectId(input?.todo_id) })
+            return todo ? todo : null
+          }else {
+            return null
+          }
+        } else if(input?.process == "delete"){
+          const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
+          {
+            $pull:{
+              todo_owner_ids: input?.user_id
+            }
+          })
+          await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},
+          {
+            $pull: {
+              todo_ids: input?.todo_id
+            }
+          })
+          if(todoUpdate.modifiedCount > 0 ){
+            const todo = await todosCollection.findOne({ _id: new ObjectId(input?.todo_id)})
+            return todo ? todo : null
+          }else{
+            return null
+          }
+        } else {
+          return null
+        }
+      }catch(e){
+        throw new Error("We found an error! " + e)
+      }
     }
   }
 

@@ -40,6 +40,12 @@ input deleteProjectInput {
   _id: String!
 }
 
+input updateProjectStuffInput{
+  user_id: String!
+  project_id: String!
+  process: String!
+}
+
 type Query{
   getAllProjects:[Project]
   getProject(input: getProjectInput!):Project
@@ -49,5 +55,6 @@ type Mutation {
   createProject(input: createProjectInput): Project
   updateProject(input: updateProjectInput): Project
   deleteProject(input: deleteProjectInput): Project
+  updateProjectStuff(input: updateProjectStuffInput): Project
 }
 `

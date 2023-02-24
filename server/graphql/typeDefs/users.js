@@ -43,6 +43,16 @@ input deleteUserInput {
   _id: String!
 }
 
+input updateUserProjectsInput{
+  _id: String!
+  project_id: String!
+  job: String!
+}
+input updateUserTodosInput{
+  _id: String!
+  todo_id: String!
+  job: String!
+}
 type Query{
   getAllUsers:[User]
   getUser(input: getUserInput!):User
@@ -52,5 +62,7 @@ type Mutation {
   createUser(input: createUserInput): User
   updateUser(input: updateUserInput): User
   deleteUser(input: deleteUserInput): User
+  updateUserProjects(input: updateUserProjectsInput): User
+  updateUserTodos(input: updateUserTodosInput): User
 }
 `

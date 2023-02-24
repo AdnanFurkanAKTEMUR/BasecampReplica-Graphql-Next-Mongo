@@ -6,7 +6,7 @@ type Todo {
   _id: String
   topic_id: String
   todo_name: String
-  todo_owner_id: String
+  todo_owner_ids: [String]
   todo_description: String
   updated_at: String
   created_at: String
@@ -24,18 +24,22 @@ input createTodoInput{
   topic_id: String!
   todo_name: String!
   todo_description: String
-  todo_owners_ids: [String]
 }
 
 input updateTodoInput{
   _id: String!
   todo_name: String!
   todo_description: String
-  todo_owner_id: String
 }
 
 input deleteTodoInput{
   _id: String!
+}
+
+input updateTodoOwnersInput{
+  user_id: String!
+  todo_id: String!
+  process: String!
 }
 
 type Query {
@@ -48,5 +52,6 @@ type Mutation {
   createTodo(input: createTodoInput!): Todo
   updateTodo(input: updateTodoInput!): Todo
   deleteTodo(input: deleteTodoInput!): Todo
+  updateTodoOwners(input: updateTodoOwnersInput): Todo
 }
 `

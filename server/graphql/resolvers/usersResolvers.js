@@ -27,7 +27,10 @@ module.exports = {
       try {
         const userCollection = await client.db("basecampReplica").collection("users")
         const user = await userCollection.insertOne({
-
+          user_name: input?.user_name,
+          user_password: input?.user_password,
+          user_email: input?.user_email,
+          user_image: input?.user_image,
           created_at: new Date(),
           updated_at: new Date()
         })
@@ -47,6 +50,10 @@ module.exports = {
         const userCollection = await client.db("basecampReplica").collection("users")
         const userUpdate = await userCollection.updateOne({ _id: new ObjectId(input?._id) }, {
           $set: {
+            user_name:input?.user_name,
+            user_password:input?.user_password,
+            user_email:input?.user_email,
+            user_image: input?.user_image,
             updated_at: new Date()
           }
         })
@@ -72,6 +79,104 @@ module.exports = {
           return null
         }
       } catch (e) {
+        throw new Error("We found an error! " + e)
+      }
+    },
+    updateUserProjects: async (_, { input }, { req, res, client }) => {
+      try{
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const projectsCollection = await client.db("basecampReplica").collection("projects")
+        if(input?.job == "add"){
+          const userUpdate = await userCollection.updateOne({ _id: new ObjectId(input?._id)},
+            {
+              $push:{
+                project_ids: input?.project_id
+              }
+            })
+          await projectsCollection.updateOne({ _id: new ObjectId(input?.project_id)},
+          {
+            $push:{
+              stuff_ids: input?._id
+            }
+          })
+          if(userUpdate.modifiedCount > 0){
+            const user = await userCollection.findOne({ _id: new ObjectId(input?._id) })
+            return user ? user : null
+          }else {
+            return null
+          }
+        } else if(input?.job == "delete"){
+          const userUpdate = await userCollection.updateOne({ _id: new ObjectId(input?._id)},
+          {
+            $pull: {
+              project_ids: input?.project_id
+            }
+          })
+          await projectsCollection.updateOne({ _id: new ObjectId(input?.project_id)},
+          {
+            $pull:{
+              stuff_ids: input?._id
+            }
+          })
+          if(userUpdate.modifiedCount > 0 ){
+            const user = await userCollection.findOne({ _id: new ObjectId(input?._id)})
+            return user ? user : null
+          }else{
+            return null
+          }
+        } else {
+          return null
+        }
+      }catch(e){
+        throw new Error("We found an error! " + e)
+      }
+    },
+    updateUserTodos: async (_, { input }, { req, res, client }) => {
+      try{
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const todosCollection = await client.db("basecampReplica").collection("todos")
+        if(input?.job == "add"){
+          const userUpdate = await userCollection.updateOne({ _id: new ObjectId(input?._id)},
+            {
+              $push:{
+                todo_ids: input?.todo_id
+              }
+            })
+          await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
+          {
+            $push:{
+              todo_owner_ids: input?._id
+            }
+          })
+          if(userUpdate.modifiedCount > 0){
+            const user = await userCollection.findOne({ _id: new ObjectId(input?._id) })
+            return user ? user : null
+          }else {
+            return null
+          }
+        } else if(input?.job == "delete"){
+          const userUpdate = await userCollection.updateOne({ _id: new ObjectId(input?._id)},
+          {
+            $pull: {
+              todo_ids: input?.todo_id
+            }
+          })
+          await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
+          {
+            $pull:{
+              todo_owner_ids: input?._id
+            }
+          })
+          if(userUpdate.modifiedCount > 0 ){
+            const user = await userCollection.findOne({ _id: new ObjectId(input?._id)})
+            return user ? user : null
+          }else{
+            return null
+          }
+        } else {
+          return null
+        }
+      }catch(e){
         throw new Error("We found an error! " + e)
       }
     }
