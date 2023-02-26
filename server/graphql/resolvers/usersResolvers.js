@@ -1,4 +1,6 @@
 const ObjectId = require('mongodb').ObjectId;
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 module.exports = {
 
   Query: {
@@ -26,15 +28,28 @@ module.exports = {
     createUser: async (_, { input }, { req, res, client }) => {
       try {
         const userCollection = await client.db("basecampReplica").collection("users")
+        const oldUser = await userCollection.findOne({ _id: input?.user_email})
+        if(oldUser){
+          throw new Error("Kullanıcı zaten kayıtlı.")
+        }
+        const enPass = await bcrypt.hash(input?.user_password, 10)
         const user = await userCollection.insertOne({
           user_name: input?.user_name,
-          user_password: input?.user_password,
+          user_password: enPass,
           user_email: input?.user_email,
           user_image: input?.user_image,
           created_at: new Date(),
           updated_at: new Date()
         })
+
         if (user.acknowledged) {
+          const token = jwt.sign({
+            user_id: user.insertedId,
+            user_email: input?.user_email, 
+            user_name: input?.user_name,
+            user_image: input?.user_image,
+          }, "UNSAFE_STRING", { expiresIn: "2h" })
+          await userCollection.updateOne({ _id: user.insertedId}, {$set:{ token: token}})
           const createdUser = await userCollection.findOne({ _id: user.insertedId })
           return createdUser ? createdUser : null
         } else {
@@ -44,7 +59,33 @@ module.exports = {
         throw new Error("We have an error! " + e)
       }
     },
+    loginUser: async (_, { input }, { req, res, client }) => {
+      try{
+        
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const user = await userCollection.findOne({ user_email: input?.user_email })
+        const dogrula = await bcrypt.compare(input?.user_password, user.user_password)
 
+        if(user && dogrula){
+          const token = jwt.sign({
+            user_id: user._id,
+            user_email: user.user_email, 
+            user_name: user.user_name,
+            user_image: user.user_image,
+          }, "UNSAFE_STRING", {expiresIn: "2h"})
+          await res.cookie("token", token, { httpOnly: true, secure: true })
+
+          await userCollection.updateOne({_id: user._id},{ $set: { token: token}})
+          const updatedUser = await userCollection.findOne({ _id: user._id})
+          return updatedUser ? updatedUser : null
+        }else{
+          throw new Error("Doğrulama başarısız oldu!")
+        }
+
+      }catch(e){
+        throw new Error("we found an error!")
+      }
+    },
     updateUser: async (_, { input }, { req, res, client }) => {
       try {
         const userCollection = await client.db("basecampReplica").collection("users")

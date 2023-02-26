@@ -10,6 +10,7 @@ type User {
   user_password: String
   user_email: String
   user_image: String
+  token: String
   project_ids: [ String ]
   todo_ids: [ String ]
   updated_at: String
@@ -40,6 +41,10 @@ input deleteUserInput {
   _id: String!
 }
 
+input loginUserInput {
+ user_email: String!
+ user_password: String!
+}
 
 type Query{
   getAllUsers:[User]
@@ -50,5 +55,6 @@ type Mutation {
   createUser(input: createUserInput): User
   updateUser(input: updateUserInput): User
   deleteUser(input: deleteUserInput): User
+  loginUser(input: loginUserInput!): User
 }
 `
