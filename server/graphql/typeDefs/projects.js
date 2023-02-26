@@ -11,7 +11,7 @@ type Project {
   project_description: String
   owner_id: String
   parent_project_id: String
-  stuff_ids: [ String ]
+  stuffs: [ User ]
   updated_at: String
   created_at: String
 }

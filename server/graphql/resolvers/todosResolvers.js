@@ -94,11 +94,12 @@ module.exports = {
       try{
         const userCollection = await client.db("basecampReplica").collection("users")
         const todosCollection = await client.db("basecampReplica").collection("todos")
+        const owner = await userCollection.findOne({ _id: new ObjectId(input?.user_id)}) 
         if(input?.process == "add"){
           const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
           {
             $push:{
-              todo_owner_ids: input?.user_id
+              todo_owners: owner
             }
           })
           await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},
@@ -117,7 +118,7 @@ module.exports = {
           const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
           {
             $pull:{
-              todo_owner_ids: input?.user_id
+              todo_owners: { _id: new ObjectId(input?.user_id)}
             }
           })
           await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},

@@ -6,7 +6,7 @@ type Todo {
   _id: String
   topic_id: String
   todo_name: String
-  todo_owner_ids: [String]
+  todo_owners: [ User ]
   todo_description: String
   updated_at: String
   created_at: String
