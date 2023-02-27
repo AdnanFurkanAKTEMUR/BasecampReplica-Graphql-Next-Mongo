@@ -21,7 +21,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1 className='text-green-600'>hi there</h1>
+        <h1 className='text-green-600'>Kullanıcı giriş yaptı!</h1>
       </main>
     </>
   )
