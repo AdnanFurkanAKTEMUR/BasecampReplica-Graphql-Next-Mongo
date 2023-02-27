@@ -46,9 +46,14 @@ input updateProjectStuffInput{
   process: String!
 }
 
+input getUserProjectInput{
+  user_id: String!
+}
+
 type Query{
   getAllProjects:[Project]
   getProject(input: getProjectInput!):Project
+  getUserProject(input: getUserProjectInput!): [Project]
 }
 
 type Mutation {

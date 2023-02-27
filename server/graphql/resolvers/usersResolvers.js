@@ -74,6 +74,7 @@ module.exports = {
             user_email: input?.user_email,
             user_name: input?.user_name,
             user_image: input?.user_image,
+            created_at: new Date(),
           }, "UNSAFE_STRING", { expiresIn: "2h" })
           await userCollection.updateOne({ _id: user.insertedId }, { $set: { token: token } })
           const createdUser = await userCollection.findOne({ _id: user.insertedId })
@@ -98,6 +99,7 @@ module.exports = {
             user_email: user.user_email,
             user_name: user.user_name,
             user_image: user.user_image,
+            created_at: user?.created_at
           }, "UNSAFE_STRING", { expiresIn: "2h" })
           await res.cookie("token", token, { httpOnly: true, secure: true })
 

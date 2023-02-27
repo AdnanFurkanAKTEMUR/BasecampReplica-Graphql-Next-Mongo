@@ -3,29 +3,26 @@ import { Layout, Menu, theme } from 'antd';
 import AuthContext from "@/context/authContext";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { CHECK_TOKEN, LOGOUT } from "@/modules/resolvers/userResolvers";
-import { useRouter } from "next/navigation";
 import SiderComp from "./Sider";
 const { Header, Content, Footer, Sider } = Layout;
 
 
 type User = {
-  _id: string,
-  username: string,
-  usersurname: string,
-  email: string,
-  phone: string,
-  role: string
+  user_id: string,
+  user_name: string,
+  user_email: string,
+  user_image: string,
 }
 
 type AppProps = {
-  children: React.ReactNode; // 👈️ type children
+  children: React.ReactNode; // type children
 };
 
 const App = (props: AppProps) => {
 
   const { user }: any = useContext(AuthContext)
   const context = useContext(AuthContext)
-  const [userState, setUserState] = useState<User>({ _id: "", username: "", usersurname: "", email: "", phone: "", role: "" })
+  const [userState, setUserState] = useState<User>({ user_id: "", user_name: "", user_email: "", user_image: "" })
 
   const [fetchUser, { data, loading, error }] = useLazyQuery(CHECK_TOKEN, { fetchPolicy: "no-cache" })
 
@@ -60,7 +57,6 @@ const App = (props: AppProps) => {
       <>
         <SiderComp login={true} />
       </>
-
     );
   }
 };
