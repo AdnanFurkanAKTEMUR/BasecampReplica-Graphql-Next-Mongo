@@ -1,6 +1,7 @@
 const ObjectId = require('mongodb').ObjectId;
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const cookie = require('cookie')
 module.exports = {
 
   Query: {
@@ -21,15 +22,40 @@ module.exports = {
       } catch (e) {
         throw new Error("We have an error! " + e)
       }
-    }
+    },
+    checkToken: async (_, __, { req, res, client }) => {
+      try {
+        if (req && req.headers) {
+          const userCollection = await client.db("basecampReplica").collection("users")
+          const cookies = cookie.parse(req.headers.cookie)
+          const userVerify = jwt.verify(cookies.token, "UNSAFE_STRING")
+          const user = await userCollection.findOne({ _id: userVerify.user_id })
+          if (user) {
+            return user
+          } else {
+            throw new Error("Kullanıcı doğrulaması başarısız!" + e)
+          }
+        }
+      } catch (e) {
+        throw new Error("We found an error! " + e)
+      }
+    },
+    logout: async (_, __, { req, res, client }) => {
+      try {
+        await res.cookie("token", "", { httpOnly: true, secure: true })
+        return "Çıkış başarılı!"
+      } catch (e) {
+        throw new Error("We found an error! " + e)
+      }
+    },
   },
 
   Mutation: {
     createUser: async (_, { input }, { req, res, client }) => {
       try {
         const userCollection = await client.db("basecampReplica").collection("users")
-        const oldUser = await userCollection.findOne({ _id: input?.user_email})
-        if(oldUser){
+        const oldUser = await userCollection.findOne({ _id: input?.user_email })
+        if (oldUser) {
           throw new Error("Kullanıcı zaten kayıtlı.")
         }
         const enPass = await bcrypt.hash(input?.user_password, 10)
@@ -45,11 +71,11 @@ module.exports = {
         if (user.acknowledged) {
           const token = jwt.sign({
             user_id: user.insertedId,
-            user_email: input?.user_email, 
+            user_email: input?.user_email,
             user_name: input?.user_name,
             user_image: input?.user_image,
           }, "UNSAFE_STRING", { expiresIn: "2h" })
-          await userCollection.updateOne({ _id: user.insertedId}, {$set:{ token: token}})
+          await userCollection.updateOne({ _id: user.insertedId }, { $set: { token: token } })
           const createdUser = await userCollection.findOne({ _id: user.insertedId })
           return createdUser ? createdUser : null
         } else {
@@ -60,29 +86,29 @@ module.exports = {
       }
     },
     loginUser: async (_, { input }, { req, res, client }) => {
-      try{
-        
+      try {
+
         const userCollection = await client.db("basecampReplica").collection("users")
         const user = await userCollection.findOne({ user_email: input?.user_email })
         const dogrula = await bcrypt.compare(input?.user_password, user.user_password)
 
-        if(user && dogrula){
+        if (user && dogrula) {
           const token = jwt.sign({
             user_id: user._id,
-            user_email: user.user_email, 
+            user_email: user.user_email,
             user_name: user.user_name,
             user_image: user.user_image,
-          }, "UNSAFE_STRING", {expiresIn: "2h"})
+          }, "UNSAFE_STRING", { expiresIn: "2h" })
           await res.cookie("token", token, { httpOnly: true, secure: true })
 
-          await userCollection.updateOne({_id: user._id},{ $set: { token: token}})
-          const updatedUser = await userCollection.findOne({ _id: user._id})
+          await userCollection.updateOne({ _id: user._id }, { $set: { token: token } })
+          const updatedUser = await userCollection.findOne({ _id: user._id })
           return updatedUser ? updatedUser : null
-        }else{
+        } else {
           throw new Error("Doğrulama başarısız oldu!")
         }
 
-      }catch(e){
+      } catch (e) {
         throw new Error("we found an error!")
       }
     },
@@ -91,9 +117,9 @@ module.exports = {
         const userCollection = await client.db("basecampReplica").collection("users")
         const userUpdate = await userCollection.updateOne({ _id: new ObjectId(input?._id) }, {
           $set: {
-            user_name:input?.user_name,
-            user_password:input?.user_password,
-            user_email:input?.user_email,
+            user_name: input?.user_name,
+            user_password: input?.user_password,
+            user_email: input?.user_email,
             user_image: input?.user_image,
             updated_at: new Date()
           }
@@ -123,7 +149,7 @@ module.exports = {
         throw new Error("We found an error! " + e)
       }
     },
-   
+
   }
 
 }

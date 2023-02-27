@@ -47,8 +47,10 @@ input loginUserInput {
 }
 
 type Query{
-  getAllUsers:[User]
-  getUser(input: getUserInput!):User
+  getAllUsers: [User]
+  getUser(input: getUserInput!): User
+  checkToken: User
+  logout: String
 }
 
 type Mutation {
