@@ -9,9 +9,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return <AuthProvider>
             <ApolloProvider client={client}>
               <Sidebar>
-              <Component {...pageProps} />
+                <Component {...pageProps} />
               </Sidebar>
-              
             </ApolloProvider>
           </AuthProvider>
 }

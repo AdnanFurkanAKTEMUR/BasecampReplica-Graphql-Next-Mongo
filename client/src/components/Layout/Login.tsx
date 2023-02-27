@@ -27,7 +27,7 @@ export default function Login() {
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
     update(proxy, { data: { loginUser: userData } }) {
       context.login(userData)
-      router.push("/user")
+      router.push("/")
     },
     variables: {
       input: {

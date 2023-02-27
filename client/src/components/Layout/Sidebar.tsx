@@ -17,7 +17,11 @@ type User = {
   role: string
 }
 
-const App: React.FC = (props: any) => {
+type AppProps = {
+  children: React.ReactNode; // 👈️ type children
+};
+
+const App = (props: AppProps) => {
 
   const { user }: any = useContext(AuthContext)
   const context = useContext(AuthContext)
@@ -25,7 +29,6 @@ const App: React.FC = (props: any) => {
 
   const [fetchUser, { data, loading, error }] = useLazyQuery(CHECK_TOKEN, { fetchPolicy: "no-cache" })
 
-  const router = useRouter()
   useEffect(() => {
     if (user) {
       setUserState(user)

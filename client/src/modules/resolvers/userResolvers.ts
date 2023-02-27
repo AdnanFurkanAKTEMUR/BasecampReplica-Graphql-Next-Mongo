@@ -25,18 +25,18 @@ export const LOGOUT = gql`
 `
 
 export const CHECK_TOKEN = gql`
-query Query {
-  query CheckToken {
-    checkToken {
-      _id
-      user_name
-      user_email
-      user_image
-      project_ids
-      todo_ids
-      updated_at
-      created_at
-    }
+query CheckToken {
+  checkToken {
+    _id
+    user_name
+    user_password
+    user_email
+    user_image
+    token
+    project_ids
+    todo_ids
+    updated_at
+    created_at
   }
 }
 `
