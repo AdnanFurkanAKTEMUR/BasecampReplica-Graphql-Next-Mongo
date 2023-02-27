@@ -29,7 +29,7 @@ module.exports = {
           const userCollection = await client.db("basecampReplica").collection("users")
           const cookies = cookie.parse(req.headers.cookie)
           const userVerify = jwt.verify(cookies.token, "UNSAFE_STRING")
-          const user = await userCollection.findOne({ _id: userVerify.user_id })
+          const user = await userCollection.findOne({ _id: new ObjectId(userVerify.user_id) })
           if (user) {
             return user
           } else {

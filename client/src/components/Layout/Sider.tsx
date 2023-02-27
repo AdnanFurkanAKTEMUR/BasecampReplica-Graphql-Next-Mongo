@@ -10,7 +10,7 @@ import { useLazyQuery } from '@apollo/client';
 import { LOGOUT } from '@/modules/resolvers/userResolvers';
 import { useRouter } from 'next/router';
 import AuthContext from '@/context/authContext';
-
+//<Image src={"/hill.png"} height={100} width={300} alt={""} style={{ maxHeight: "190px", maxWidth: "160px", paddingBottom: "65px" , marginLeft: "20px"}} />
 export default function SiderComp(props: any) {
 
   const router = useRouter()
@@ -32,7 +32,7 @@ export default function SiderComp(props: any) {
           onCollapse={(collapsed, type) => {
           }}
         >
-          <div  className="logo text-white max-h-20 mx-auto "><Image src={"/hill.png"} height={100} width={300} alt={""} style={{ maxHeight: "190px", maxWidth: "160px", paddingBottom: "65px" , marginLeft: "20px"}} /></div>
+          <div  className="logo text-white max-h-20 mx-auto ">Logo</div>
           <br />
           {props?.user ? <span className='text-md text-white pl-7'>Hoşgeldin <span className='text-green-600'>{props.user.username}</span></span> : ""}
           {props?.user ? <Menu
@@ -68,7 +68,7 @@ export default function SiderComp(props: any) {
         </Sider>
         <Layout>
           <Header style={{ padding: 0 }} className="bg-white dark:bg-slate-800 border-b-2 border-amber-50">
-            <h1 className="text-2xl font-bold text-white" style={{ margin: '20px 24px 0' }} > RAF YERİ YÖNETİM SİSTEMİ </h1>
+            <h1 className="text-2xl font-bold text-white" style={{ margin: '20px 24px 0' }} > Proje Yönetimi </h1>
           </Header>
           <Content style={{ margin: '24px 16px 0' }}>
             <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>

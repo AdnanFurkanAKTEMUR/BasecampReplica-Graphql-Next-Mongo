@@ -1,8 +1,9 @@
 import AuthContext from "@/context/authContext";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 import { useContext } from "react";
 import { GET_USER_PROJECTS } from '../../modules/resolvers/projectsResolvers';
 import { useQuery } from "@apollo/client";
+import Link from "next/link";
 
 
 const App = (props: any) => {
@@ -43,9 +44,9 @@ const App = (props: any) => {
     tableData = data?.getUserProject.map((d: any)=>{
       return { 
         project_name:d.project_name,
-        project_image:d.porject_image,
+        project_image:<img alt="example" src="https://source.unsplash.com/featured/50x50" />,
         project_description: d.project_description,
-        show_more: <button>merhaba</button>
+        show_more: <Link href={""}><Tag color="green">Ayrıntılar</Tag></Link>
       }
     })
   }

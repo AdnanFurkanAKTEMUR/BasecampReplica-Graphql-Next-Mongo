@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Tag } from 'antd';
 import AuthContext from "@/context/authContext";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { CHECK_TOKEN, LOGOUT } from "@/modules/resolvers/userResolvers";
@@ -35,6 +35,7 @@ const App = (props: AppProps) => {
   }, [user])
 
   useEffect(() => {
+    console.log(data);
     if (data?.checkToken) {
       context.login(data.checkToken)
     }
