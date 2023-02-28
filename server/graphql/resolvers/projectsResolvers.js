@@ -35,11 +35,15 @@ module.exports = {
     createProject: async (_, { input }, { req, res, client }) => {
       try {
         const projectCollection = await client.db("basecampReplica").collection("projects")
+        const userCollection = await client.db("basecampReplice").collection("users")
+        const user = await user.findOne({_id: new ObjectId(input?.owner_id)})
         const project = await projectCollection.insertOne({
           project_name: input?.project_name,
           project_image: input?.project_image,
           project_description: input?.project_description,
-          owner_id: input?.owner_id,
+          owner_id: {
+            user_name: user.user_name
+          }
           parent_project_id: input?.parent_project_id,
           created_at: new Date(),
           updated_at: new Date()

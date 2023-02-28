@@ -46,7 +46,7 @@ const App = (props: any) => {
         project_name:d.project_name,
         project_image:<img alt="example" src="https://source.unsplash.com/featured/50x50" />,
         project_description: d.project_description,
-        show_more: <Link href={""}><Tag color="green">Ayrıntılar</Tag></Link>
+        show_more: <Link href={{ pathname: 'project', query: { project_id: d._id } }}><Tag color="green">Ayrıntılar</Tag></Link>
       }
     })
   }

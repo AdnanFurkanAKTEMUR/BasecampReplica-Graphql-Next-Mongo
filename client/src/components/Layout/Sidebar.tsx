@@ -35,7 +35,6 @@ const App = (props: AppProps) => {
   }, [user])
 
   useEffect(() => {
-    console.log(data);
     if (data?.checkToken) {
       context.login(data.checkToken)
     }
