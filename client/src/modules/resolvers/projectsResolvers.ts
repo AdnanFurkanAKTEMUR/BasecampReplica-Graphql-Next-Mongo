@@ -7,7 +7,11 @@ export const GET_ALL_PROJECTS = gql`
       project_name
       project_image
       project_description
-      owner_id
+      owner_info {
+        user_id
+        user_name
+        user_image
+      }
       parent_project_id
       updated_at
       created_at
@@ -22,7 +26,11 @@ export const GET_USER_PROJECTS = gql`
       project_name
       project_image
       project_description
-      owner_id
+      owner_info {
+        user_id
+        user_name
+        user_image
+      }
       stuffs {
         _id
         user_name
@@ -42,7 +50,11 @@ query GetProject($input: getProjectInput!) {
     project_name
     project_image
     project_description
-    owner_id
+    owner_info {
+        user_id
+        user_name
+        user_image
+      }
     parent_project_id
     stuffs {
       _id

@@ -9,11 +9,17 @@ type Project {
   project_name: String
   project_image: String
   project_description: String
-  owner_id: String
+  owner_info: Owner_Info
   parent_project_id: String
   stuffs: [ User ]
   updated_at: String
   created_at: String
+}
+
+type Owner_Info {
+  user_id: String
+  user_name: String
+  user_image: String
 }
 
 input getProjectInput{

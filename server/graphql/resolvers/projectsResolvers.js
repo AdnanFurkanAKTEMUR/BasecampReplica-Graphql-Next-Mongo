@@ -23,7 +23,7 @@ module.exports = {
     getUserProject: async (_,{input}, { req, res, client }) => {
       try{
         const projectCollection = await client.db("basecampReplica").collection("projects")
-        const project = await projectCollection.find({ owner_id: input?.user_id, parent_project_id: null }).toArray()
+        const project = await projectCollection.find({ "owner_info.user_id": new ObjectId(input?.user_id), parent_project_id: null }).toArray()
         return project ? project : null
       } catch(e){
         throw new Error("We have an error! " + e)
@@ -35,15 +35,17 @@ module.exports = {
     createProject: async (_, { input }, { req, res, client }) => {
       try {
         const projectCollection = await client.db("basecampReplica").collection("projects")
-        const userCollection = await client.db("basecampReplice").collection("users")
-        const user = await user.findOne({_id: new ObjectId(input?.owner_id)})
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const user = await userCollection.findOne({_id: new ObjectId(input?.owner_id)})
         const project = await projectCollection.insertOne({
           project_name: input?.project_name,
           project_image: input?.project_image,
           project_description: input?.project_description,
-          owner_id: {
-            user_name: user.user_name
-          }
+          owner_info: {
+            user_id:user._id,
+            user_name: user.user_name,
+            user_image: user.user_image
+          },
           parent_project_id: input?.parent_project_id,
           created_at: new Date(),
           updated_at: new Date()
