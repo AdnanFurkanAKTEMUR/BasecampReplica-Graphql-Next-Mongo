@@ -1,14 +1,14 @@
 import AuthContext from "@/context/authContext";
 import { Table, Tag } from "antd";
 import { useContext } from "react";
-import { GET_USER_PROJECTS } from '../../modules/resolvers/projectsResolvers';
+import { GET_OWNER_PROJECTS } from '../../modules/resolvers/projectsResolvers';
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
 
 
 const App = (props: any) => {
   const { user }: any = useContext(AuthContext)
-  const {data, loading, error } = useQuery(GET_USER_PROJECTS, { variables: { input: { user_id: user._id}}})
+  const {data, loading, error } = useQuery(GET_OWNER_PROJECTS, { variables: { input: { user_id: user._id}}})
   
   
   const columns: any = [
@@ -40,13 +40,13 @@ const App = (props: any) => {
       project_name2: 'New York No. 1 Lake Park',
     }
   ]
-  if(data?.getUserProject){
-    tableData = data?.getUserProject.map((d: any)=>{
+  if(data?.getOwnerProject){
+    tableData = data?.getOwnerProject.map((d: any)=>{
       return { 
         project_name:d.project_name,
         project_image:<img alt="example" src="https://source.unsplash.com/featured/50x50" />,
         project_description: d.project_description,
-        show_more: <Link href={{ pathname: 'project', query: { project_id: d._id } }}><Tag color="green">Ayrıntılar</Tag></Link>
+        show_more: <Link href={{ pathname: 'project/project_info', query: { project_id: d._id } }}><Tag color="green">Ayrıntılar</Tag></Link>
       }
     })
   }
@@ -55,7 +55,7 @@ const App = (props: any) => {
   return (
     <>
     <h3 className="text-lg">Sahibi Olduğum Projeler</h3>
-    { data?.getUserProject ? <Table columns={columns} dataSource={tableData} /> : ""}
+    { data?.getOwnerProject ? <Table columns={columns} dataSource={tableData} /> : ""}
     </>
   );
 };

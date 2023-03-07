@@ -59,7 +59,8 @@ input getUserProjectInput{
 type Query{
   getAllProjects:[Project]
   getProject(input: getProjectInput!):Project
-  getUserProject(input: getUserProjectInput!): [Project]
+  getOwnerProject(input: getUserProjectInput!): [Project]
+  getStuffProject(input: getUserProjectInput!): [Project]
 }
 
 type Mutation {

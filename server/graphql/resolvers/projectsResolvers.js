@@ -20,10 +20,19 @@ module.exports = {
         throw new Error("We have an error! " + e)
       }
     },
-    getUserProject: async (_,{input}, { req, res, client }) => {
+    getOwnerProject: async (_,{input}, { req, res, client }) => {
       try{
         const projectCollection = await client.db("basecampReplica").collection("projects")
         const project = await projectCollection.find({ "owner_info.user_id": new ObjectId(input?.user_id), parent_project_id: null }).toArray()
+        return project ? project : null
+      } catch(e){
+        throw new Error("We have an error! " + e)
+      }
+    },
+    getStuffProject: async (_,{input}, { req, res, client }) => {
+      try{
+        const projectCollection = await client.db("basecampReplica").collection("projects")
+        const project = await projectCollection.find({ stuffs: {$elemMatch:{_id: new ObjectId(input.user_id)}}, parent_project_id: null }).toArray()
         return project ? project : null
       } catch(e){
         throw new Error("We have an error! " + e)

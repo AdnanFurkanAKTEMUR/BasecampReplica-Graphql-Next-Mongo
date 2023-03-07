@@ -19,9 +19,9 @@ export const GET_ALL_PROJECTS = gql`
   }
 `
 
-export const GET_USER_PROJECTS = gql`
-  query GetUserProject($input: getUserProjectInput!) {
-    getUserProject(input: $input) {
+export const GET_OWNER_PROJECTS = gql`
+  query GetOWnerProject($input: getUserProjectInput!) {
+    getOwnerProject(input: $input) {
       _id
       project_name
       project_image
@@ -60,6 +60,30 @@ query GetProject($input: getProjectInput!) {
       _id
       user_name
       user_email
+      user_image
+    }
+    updated_at
+    created_at
+  }
+}
+`
+
+export const GET_STUFF_PROJECT = gql`
+query GetStuffProject($input: getUserProjectInput!) {
+  getStuffProject(input: $input) {
+    _id
+    project_name
+    project_image
+    project_description
+    owner_info {
+      user_id
+      user_name
+      user_image
+    }
+    parent_project_id
+    stuffs {
+      _id
+      user_name
       user_image
     }
     updated_at
