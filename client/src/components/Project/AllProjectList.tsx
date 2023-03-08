@@ -11,7 +11,6 @@ export default function ProjectInfo(props: any) {
   const { user }: any = useContext(AuthContext)
   const { data: stuff_data, loading: stuff_loading, error: stuff_error } = useQuery(GET_STUFF_PROJECT, { variables: { input: { user_id: user._id } } })
   const { data: owner_data, loading: owner_loading, error: owner_error } = useQuery(GET_OWNER_PROJECTS, { variables: { input: { user_id: user._id } } })
-  console.log(owner_data);
 
   if (stuff_loading || owner_loading) return <div>Bekleyiniz</div>
   if (stuff_error || owner_error) return <div>error</div>

@@ -46,6 +46,10 @@ module.exports = {
         const projectCollection = await client.db("basecampReplica").collection("projects")
         const userCollection = await client.db("basecampReplica").collection("users")
         const user = await userCollection.findOne({_id: new ObjectId(input?.owner_id)})
+        const stuffObjectIds = input.stuff.map((a)=>{
+          return new ObjectId(a)
+        })
+        const stuffs = await userCollection.find({_id: {$in:stuffObjectIds}}).toArray()
         const project = await projectCollection.insertOne({
           project_name: input?.project_name,
           project_image: input?.project_image,
@@ -55,6 +59,7 @@ module.exports = {
             user_name: user.user_name,
             user_image: user.user_image
           },
+          stuffs: stuffs,
           parent_project_id: input?.parent_project_id,
           created_at: new Date(),
           updated_at: new Date()
@@ -73,12 +78,18 @@ module.exports = {
     updateProject: async (_, { input }, { req, res, client }) => {
       try {
         const projectCollection = await client.db("basecampReplica").collection("projects")
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const stuffObjectIds = input.stuff.map((a)=>{
+          return new ObjectId(a)
+        })
+        const stuffs = await userCollection.find({_id: {$in:stuffObjectIds}}).toArray()
         const projectUpdate = await projectCollection.updateOne({ _id: new ObjectId(input?._id) }, {
           $set: {
             project_name: input?.project_name,
             project_image: input?.project_image,
             project_description: input?.project_description,
             parent_project_id: input?.parent_project_id,
+            stuffs: stuffs,
             updated_at: new Date()
           }
         })

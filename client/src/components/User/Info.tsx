@@ -9,6 +9,9 @@ const { Meta } = Card;
 const App = (props: any) => {
   const { user }: any = useContext(AuthContext)
 
+
+
+  const btnClass = "text-gray-900 bg-white border border-gray-300 focus:outline-none text-center focus:ring-4 my-2 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
   return (
     <>
       <Row>
@@ -31,11 +34,12 @@ const App = (props: any) => {
           <div className="mb-1">
             <span>Kullanıcı Kayıt Tarihi:</span> <span className="text-green-600 font-bold">{new Date(parseInt(user.created_at)).toLocaleString("tr-TR")}</span>
           </div>
-          <div className="mb-5">
-            <Button><Link href="">Bilgilerimi Düzenle</Link></Button>
-            <Button><Link href="">Şifre Değiştir</Link></Button>
-            <Button><Link href="">Proje Oluştur</Link></Button>
+          <div className="my-5">
+            <Link href={""} className={btnClass}>Bilgilerimi Düzenle</Link>
+            <Link href={""} className={btnClass}>Şifre Değiştir</Link>
+            <Link href={"project/create_project"} className={btnClass}>Proje Oluştur</Link>
           </div>
+          <hr />
           <div className="overflow-auto">
             <ProjectsTable />
           </div>

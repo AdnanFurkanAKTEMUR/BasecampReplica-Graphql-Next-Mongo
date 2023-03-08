@@ -46,11 +46,16 @@ input loginUserInput {
  user_password: String!
 }
 
+input getStuffInput {
+  user_id: String!
+}
+
 type Query{
   getAllUsers: [User]
   getUser(input: getUserInput!): User
   checkToken: User
   logout: String
+  getStuff(input: getStuffInput!): [ User ]
 }
 
 type Mutation {

@@ -91,3 +91,53 @@ query GetStuffProject($input: getUserProjectInput!) {
   }
 }
 `
+
+export const CREATE_PROJECT = gql`
+  mutation CreateProject($input: createProjectInput) {
+    createProject(input: $input) {
+      _id
+      project_name
+      project_image
+      project_description
+      owner_info {
+        user_id
+        user_name
+        user_image
+      }
+      parent_project_id
+      stuffs {
+        _id
+        user_email
+        user_image
+        user_name
+      }
+      updated_at
+      created_at
+    }
+  }
+`
+
+export const UPDATE_PROJECT = gql`
+mutation UpdateProject($input: updateProjectInput) {
+  updateProject(input: $input) {
+    _id
+    project_name
+    project_image
+    project_description
+    owner_info {
+      user_id
+      user_name
+      user_image
+    }
+    parent_project_id
+    stuffs {
+      _id
+      user_email
+      user_image
+      user_name
+    }
+    updated_at
+    created_at
+  }
+}
+`

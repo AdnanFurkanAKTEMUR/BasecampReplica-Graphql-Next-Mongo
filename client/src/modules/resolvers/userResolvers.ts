@@ -40,3 +40,31 @@ query CheckToken {
   }
 }
 `
+
+export const GET_ALL_USERS = gql`
+query GetAllUsers {
+  getAllUsers {
+    _id
+    user_name
+    user_password
+    user_email
+    user_image
+    token
+    project_ids
+    todo_ids
+    updated_at
+    created_at
+  }
+}
+`
+
+export const GET_STAFFS = gql`
+  query GetStuff($input: getStuffInput!) {
+    getStuff(input: $input) {
+      _id
+      user_name
+      user_email
+      user_image
+    }
+  }
+`

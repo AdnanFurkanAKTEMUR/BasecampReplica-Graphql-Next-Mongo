@@ -23,6 +23,15 @@ module.exports = {
         throw new Error("We have an error! " + e)
       }
     },
+    getStuff: async (_, { input }, { req, res, client }) => {
+      try {
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const stuff = await userCollection.find({ _id: { $ne: new ObjectId(input?.user_id)} }).toArray()
+        return stuff ? stuff : null
+      } catch (e) {
+        throw new Error("We have an error! " + e)
+      }
+    },
     checkToken: async (_, __, { req, res, client }) => {
       try {
         if (req && req.headers) {

@@ -35,7 +35,7 @@ export default function ProjectInfo(props: any) {
           <div className='p-2 border'>Eklenme Tarihi: <Tag color='yellow'>{new Date(parseInt(project_data?.getProject.created_at)).toLocaleString("tr-TR")}</Tag></div>
           <div className='p-2 border'>Güncellenme Tarihi: <Tag color='yellow'>{new Date(parseInt(project_data?.getProject.updated_at)).toLocaleString("tr-TR")}</Tag></div>
           <div className=''>
-            <Button><Link href="">Bilgileri Güncelle</Link></Button>
+            <Button><Link href={{ pathname: 'update_project', query: { project_id: project_data?.getProject._id } }}>Bilgileri Güncelle</Link></Button>
           </div>
         </Col>
       </Row>
