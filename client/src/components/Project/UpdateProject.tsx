@@ -18,14 +18,13 @@ interface selectType {
 
 export default function UpdateProjectComponent(props: any){
   const { user }: any = useContext(AuthContext)
-  const option = props.project.stuffs.map((s:any)=>{
-    return {label:<><Image alt="example" src="https://source.unsplash.com/featured/20x20" className='rounded-full inline' width={20} height={20} /> {s.user_name}</>, value: s._id}
-  })
   const { data: allStuffData, loading: allStuffLoading, error: allStuffError } = useQuery(GET_STAFFS, {variables:{ input:{ user_id: user?._id}}})
   const [update_project, { data: updateProjectData, loading: updateProjectLoading, error: updateProjectError }] = useMutation(UPDATE_PROJECT)
   const [inputs, setInputs] = useState<inputType>({ project_name: props.project.project_name, project_description: props.project.project_description })
-  const [select, setSelect] = useState<selectType>({stuff_ids:[""]})
-
+  const [select, setSelect] = useState<selectType>({stuff_ids:props.project.stuffs.map((s:any)=>{
+    return {label:<><Image alt="example" src="https://source.unsplash.com/featured/20x20" className='rounded-full inline' width={20} height={20} /> {s.user_name}</>, value: s._id}
+  })})
+  
   const handleChange = (e: any) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value })
   }
@@ -36,9 +35,12 @@ export default function UpdateProjectComponent(props: any){
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    console.log(select);
+    
     await update_project({
       variables: {
         input: {
+          _id: props.project._id,
           project_description: inputs.project_description,
           project_image: "null",
           project_name: inputs.project_name,
@@ -70,7 +72,7 @@ export default function UpdateProjectComponent(props: any){
               style={{ width: '100%' }}
               placeholder="Kullanıcı Seçin"
               onChange={handleChangeForSelect}
-              defaultValue={option}
+              defaultValue={select.stuff_ids}
               options={allStuffData?.getStuff.map((user:any) => {return {label:<><Image alt="example" src="https://source.unsplash.com/featured/20x20" className='rounded-full inline' width={20} height={20} /> {user.user_name}</>, value: user._id}})}
             />
           </div>

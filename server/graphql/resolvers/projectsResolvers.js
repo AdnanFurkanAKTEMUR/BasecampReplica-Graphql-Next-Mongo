@@ -64,6 +64,11 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date()
         })
+        
+        //user güncellenmesi
+        await userCollection.updateOne({_id: new ObjectId(input?.owner_id)},{
+          $push:{project_ids: project.insertedId}
+        })
         if (project.acknowledged) {
           const createdProject = await projectCollection.findOne({ _id: project.insertedId })
           return createdProject ? createdProject : null
@@ -106,8 +111,13 @@ module.exports = {
     deleteProject: async (_, { input }, { req, res, client }) => {
       try {
         const projectCollection = await client.db("basecampReplica").collection("projects")
+        const userCollection = await client.db("basecampReplica").collection("users")
         const deletedProject = await projectCollection.findOne({ _id: new ObjectId(input?._id) })
         const project = await projectCollection.deleteOne({ _id: new ObjectId(input?._id) })
+        
+        await userCollection.updateOne({_id: new ObjectId(input?.user_id)}, {
+          $pull:{project_ids: input._id}
+        })
 
         if (project.deletedCount > 0) {
           return deletedProject ? deletedProject : null

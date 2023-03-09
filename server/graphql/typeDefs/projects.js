@@ -46,6 +46,7 @@ input updateProjectInput {
 
 input deleteProjectInput {
   _id: String!
+  user_id: String!
 }
 
 input updateProjectStuffInput{
