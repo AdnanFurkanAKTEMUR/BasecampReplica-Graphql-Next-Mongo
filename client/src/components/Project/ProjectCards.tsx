@@ -18,7 +18,7 @@ export default function OwnerProjectCards(props: any) {
           <p className='my-1'>Katkı Sunanlar: {props.project.stuffs?.map((stuff: any) => {
             return <Tag color='purple' className='ml-1'><Image alt="example" src="https://source.unsplash.com/featured/20x20" className='rounded-full inline' width={20} height={20} /> {stuff.user_name}</Tag>
           })}</p>
-          <Link href={""} className="text-gray-900 bg-white border border-gray-300 focus:outline-none text-center focus:ring-4 my-2 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Projeye Git</Link>
+          <Link href={{ pathname: 'topic', query: { project_id: props.project._id } }} className="text-gray-900 bg-white border border-gray-300 focus:outline-none text-center focus:ring-4 my-2 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Projeye Git</Link>
         </div>
       </span>
     </>
