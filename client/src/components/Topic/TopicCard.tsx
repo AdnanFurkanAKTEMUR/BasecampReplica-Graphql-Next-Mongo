@@ -6,7 +6,7 @@ export default function TopicCard(props: any) {
 
   return (
     <>
-      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+      <div className="max-w-sm bg-white rounded-lg shadow">
         <div className='flex justify-center'>
           <Link href={{ pathname: "topic/update_topic", query: { topic_id: props.topic._id } }}>
             Düzenle <AiOutlineEdit className='inline' />

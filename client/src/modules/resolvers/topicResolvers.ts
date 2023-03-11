@@ -51,3 +51,12 @@ mutation UpdateTopic($input: updateTopicInput!) {
   }
 }
 `
+
+export const DELETE_TOPIC = gql`
+  mutation DeleteTopic($input: deleteTopicInput!) {
+    deleteTopic(input: $input) {
+      topic_name
+      topic_description
+    }
+  }
+`
