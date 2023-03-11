@@ -1,13 +1,19 @@
 import Image from 'next/image'
 import Link from 'next/link';
+import { AiOutlineEdit } from 'react-icons/ai';
 
 export default function TopicCard(props: any) {
-  
+
   return (
     <>
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+        <div className='flex justify-center'>
+          <Link href={{ pathname: "topic/update_topic", query: { topic_id: props.topic._id } }}>
+            Düzenle <AiOutlineEdit className='inline' />
+          </Link>
+        </div>
         <Link href="#">
-          <Image className="rounded-t-lg w-full h-auto" src={"https://source.unsplash.com/featured/300x300"} alt="" width="0" height="0" sizes="100vw"/>
+          <Image className="rounded-t-lg w-full h-auto" src={"https://source.unsplash.com/featured/300x300"} alt="" width="0" height="0" sizes="100vw" />
         </Link>
         <div className="p-5">
           <Link href="#">

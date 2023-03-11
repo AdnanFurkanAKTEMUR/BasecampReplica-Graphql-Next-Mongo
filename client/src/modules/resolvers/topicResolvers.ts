@@ -25,3 +25,29 @@ export const CREATE_TOPIC = gql`
     }
   }
 `
+
+export const GET_TOPIC = gql`
+  query GetTopic($input: getTopicInput!) {
+    getTopic(input: $input) {
+      _id
+      project_id
+      topic_name
+      topic_description
+      updated_at
+      created_at
+    }
+  }
+`
+
+export const UPDATE_TOPIC = gql`
+mutation UpdateTopic($input: updateTopicInput!) {
+  updateTopic(input: $input) {
+    _id
+    project_id
+    topic_name
+    topic_description
+    updated_at
+    created_at
+  }
+}
+`
