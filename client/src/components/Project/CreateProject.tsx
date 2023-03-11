@@ -26,9 +26,7 @@ export default function CreateProjectComponent(props: any) {
   const [select, setSelect] = useState<selectType>({stuff_ids:[""]})
   
   useEffect(()=>{
-    if(createProjectData){
-      console.log(createProjectData.createProject._id);
-      
+    if(createProjectData){      
       Router.push({ pathname: "project_info", query: { project_id: createProjectData.createProject._id } });
     }
   }, [createProjectData])
