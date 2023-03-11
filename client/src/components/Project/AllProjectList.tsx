@@ -18,18 +18,18 @@ export default function ProjectInfo(props: any) {
     <>
       <h3 className='text-2xl'>Oluşturduğum Projeler</h3>
       <hr />
-      <Row className='my-5 mx-1'>
+      <div className='grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-1 m-2'>
         {owner_data && owner_data.getOwnerProject.map((p:any)=>{
           return <ProjectCards project={p} />
         })}
-      </Row>
+      </div>
       <h3 className='text-2xl'>Katkı Sunduğum Projeler</h3>
       <hr />
-      <Row className='my-5'>
+      <div className='grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-1 m-2'>
       {stuff_data && stuff_data.getStuffProject.map((p:any)=>{
           return <ProjectCards project={p} />
         })}
-      </Row>
+      </div>
     </>
   )
 }
