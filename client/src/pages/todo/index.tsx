@@ -17,8 +17,6 @@ export default function Index(props: any) {
   if(todoError) return <div>Error</div>
   return (
     <>
-    {router.isReady && <div>Router is ready</div>}
-      <h3>All Todos</h3>
       <div className="mt-5">
       {
         todoData?.getAllTodosOfTopic ? <TodoList todos={todoData.getAllTodosOfTopic} /> : ""
