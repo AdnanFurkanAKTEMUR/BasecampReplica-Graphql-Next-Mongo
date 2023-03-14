@@ -36,7 +36,7 @@ module.exports = {
       try {
         const todoCollection = await client.db("basecampReplica").collection("todos")
         const userCollection = await client.db("basecampReplica").collection("users")
-        const ownersIds = input.todo_owners.map((a) => {
+        const ownersIds = input.owner_ids.map((a) => {
           return new ObjectId(a)
         })
         const owners = await userCollection.find({ _id: { $in: ownersIds } }).toArray()
