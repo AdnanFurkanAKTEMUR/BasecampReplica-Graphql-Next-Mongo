@@ -37,8 +37,6 @@ export default function CreateTodoComponent(props: any) {
 
   const handleChangeForSelect = (value: any) => {
     setSelect({owner_ids: value})
-    console.log(select);
-        
   }
 
   const handleSubmit = async (e: any) => {

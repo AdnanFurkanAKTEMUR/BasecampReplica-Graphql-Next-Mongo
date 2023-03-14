@@ -1,8 +1,6 @@
 import TodoCard from "./TodoCard";
 
 export default function TodoList(props: any) {
-  console.log(props.todos);
-
 
   return (
     <>
