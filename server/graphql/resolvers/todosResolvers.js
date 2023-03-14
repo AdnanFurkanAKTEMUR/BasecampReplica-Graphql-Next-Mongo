@@ -35,11 +35,16 @@ module.exports = {
     createTodo: async (_, { input }, { req, res, client }) => {
       try {
         const todoCollection = await client.db("basecampReplica").collection("todos")
+        const userCollection = await client.db("basecampReplica").collection("users")
+        const ownersIds = input.todo_owners.map((a) => {
+          return new ObjectId(a)
+        })
+        const owners = await userCollection.find({ _id: { $in: ownersIds } }).toArray()
         const todo = await todoCollection.insertOne({
           topic_id: input?.topic_id,
           todo_name: input?.todo_name,
+          todo_owners: owners,
           todo_description: input?.todo_description,
-          todo_owner_id: input?.todo_owner_id,
           created_at: new Date(),
           updated_at: new Date()
         })
@@ -91,52 +96,52 @@ module.exports = {
       }
     },
     updateTodoOwners: async (_, { input }, { req, res, client }) => {
-      try{
+      try {
         const userCollection = await client.db("basecampReplica").collection("users")
         const todosCollection = await client.db("basecampReplica").collection("todos")
-        const owner = await userCollection.findOne({ _id: new ObjectId(input?.user_id)}) 
-        if(input?.process == "add"){
-          const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
-          {
-            $push:{
-              todo_owners: owner
-            }
-          })
-          await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},
-          {
-            $push:{
-              todo_ids: input?.todo_id
-            }
-          })
-          if(todoUpdate.modifiedCount > 0){
+        const owner = await userCollection.findOne({ _id: new ObjectId(input?.user_id) })
+        if (input?.process == "add") {
+          const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id) },
+            {
+              $push: {
+                todo_owners: owner
+              }
+            })
+          await userCollection.updateOne({ _id: new ObjectId(input?.user_id) },
+            {
+              $push: {
+                todo_ids: input?.todo_id
+              }
+            })
+          if (todoUpdate.modifiedCount > 0) {
             const todo = await todosCollection.findOne({ _id: new ObjectId(input?.todo_id) })
             return todo ? todo : null
-          }else {
+          } else {
             return null
           }
-        } else if(input?.process == "delete"){
-          const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id)},
-          {
-            $pull:{
-              todo_owners: { _id: new ObjectId(input?.user_id)}
-            }
-          })
-          await userCollection.updateOne({ _id: new ObjectId(input?.user_id)},
-          {
-            $pull: {
-              todo_ids: input?.todo_id
-            }
-          })
-          if(todoUpdate.modifiedCount > 0 ){
-            const todo = await todosCollection.findOne({ _id: new ObjectId(input?.todo_id)})
+        } else if (input?.process == "delete") {
+          const todoUpdate = await todosCollection.updateOne({ _id: new ObjectId(input?.todo_id) },
+            {
+              $pull: {
+                todo_owners: { _id: new ObjectId(input?.user_id) }
+              }
+            })
+          await userCollection.updateOne({ _id: new ObjectId(input?.user_id) },
+            {
+              $pull: {
+                todo_ids: input?.todo_id
+              }
+            })
+          if (todoUpdate.modifiedCount > 0) {
+            const todo = await todosCollection.findOne({ _id: new ObjectId(input?.todo_id) })
             return todo ? todo : null
-          }else{
+          } else {
             return null
           }
         } else {
           return null
         }
-      }catch(e){
+      } catch (e) {
         throw new Error("We found an error! " + e)
       }
     }
